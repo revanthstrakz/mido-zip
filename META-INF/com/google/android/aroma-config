@@ -21,7 +21,7 @@ ini_set("dp","4");
 
 anisplash(
     1,
-    "anim/oof", 2000
+    "anim/furfeg", 2000
 );
 
 fontresload( "0", "ttf/droid.ttf", "15" );
