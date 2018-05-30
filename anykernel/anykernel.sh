@@ -39,6 +39,7 @@ dump_boot;
 
 # add raphielscape initialization script
 insert_line init.rc "import /init.spectrum.rc" after "import /init.trace.rc" "import /init.spectrum.rc";
+insert_line init.rc "import /init.raphiel.rc" after "import /init.spectrum.rc" "import /init.raphiel.rc";
 cp -rpf $patch/thermal-engine.conf /system/etc/thermal-engine.conf
 
 #remove deprecated ipv6 rmnet entries
@@ -80,6 +81,8 @@ remove_line init.rc "    write /proc/sys/kernel/sched_rt_period_us 1000000"
 remove_line init.rc "    # Tweak background writeout"
 remove_line init.rc "    write /proc/sys/vm/dirty_expire_centisecs 200"
 remove_line init.rc "    write /proc/sys/vm/dirty_background_ratio  5"
+
+$bin/sepolicy-inject -s init -t rootfs -c file -p execute_no_trans -P sepolicy;
 
 # end ramdisk changes
 

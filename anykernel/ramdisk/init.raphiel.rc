@@ -1,0 +1,62 @@
+# Ramdisk file for Weeb Kernel
+# Copyright (C) 2018 Raphiel Rollerscaperers (raphielscape)
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+on init
+    # Sched related things
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
+    write /dev/cpuset/foreground/cpus 1-3,4-7
+    write /dev/cpuset/top-app/cpus 1-3,4-7
+
+on late-fs
+    # Filesystemworks
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/mmcblk0/queue/nr_requests 256
+
+on property:sys.boot_completed=1
+    # according to Qualcomm, this legacy value improves first launch latencies
+    # stock value is 512k
+    setprop dalvik.vm.heapminfree 2m
+
+    # Set permissions
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_hue
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_invert
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
+
+    chown system system /sys/class/devfreq/1c00000.qcom,kgsl-3d0/governor
+    chown system system /sys/class/devfreq/1c00000.qcom,kgsl-3d0/max_freq
+    chown system system /sys/class/devfreq/1c00000.qcom,kgsl-3d0/min_freq
+
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
+    # LMK Things we see everyday
+    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,36864,46080"
+    
+    exec u:r:init:s0 -- /init.raphiel.sh
+    exec u:r:su:s0 root root -- /init.raphiel.sh
+
+    
+# Make sure Qualcomm init doesn't break this one
+on property:init.svc.qcom-post-boot=stopped
+    # Don't follow the Postboot meme
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq "400000"
+    
+    # write read_ahead_kb twice coz qualcomm init is a hoe
+    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+    write /sys/block/mmcblk0/queue/nr_requests 256
+    
+    # interactive works for not-tweaked-or-spectrumed-yet instances
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "38000 1380000:18000 1680000:58000 1780000:138000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load "89"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq "980000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 980000:58 1380000:84 1680000:99"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate "20000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time "38000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif "0"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack "180000"
