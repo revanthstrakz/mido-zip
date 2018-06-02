@@ -28,8 +28,8 @@ is_slot_device=0;
 
 ## AnyKernel permissions
 # set permissions for included ramdisk files
-mount /system;
-mount -o remount,rw /system;
+mount /vendor;
+mount -o remount,rw /vendor;
 chmod -R 755 $ramdisk
 
 ## AnyKernel install
@@ -40,31 +40,8 @@ dump_boot;
 # add raphielscape initialization script
 insert_line init.rc "import /init.spectrum.rc" after "import /init.trace.rc" "import /init.spectrum.rc";
 insert_line init.rc "import /init.raphiel.rc" after "import /init.spectrum.rc" "import /init.raphiel.rc";
-cp -rpf $patch/thermal-engine.conf /system/etc/thermal-engine.conf
+cp -rpf $patch/thermal-engine.conf /vendor/etc/thermal-engine.conf
 
-#remove deprecated ipv6 rmnet entries
-remove_line init.qcom.rc "    #To allow interfaces to get v6 address when tethering is enabled"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet1/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet2/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet3/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet4/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet5/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet6/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet7/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio0/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio1/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio2/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio3/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio4/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio5/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio6/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_sdio7/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_usb0/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_usb1/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_usb2/accept_ra 2"
-remove_line init.qcom.rc "    write /proc/sys/net/ipv6/conf/rmnet_usb3/accept_ra 2"
 #remove conflicting scheduler tuningscape
 remove_line init.rc "    # scheduler tunables"
 remove_line init.rc "    # Disable auto-scaling of scheduler tunables with hotplug. The tunables"
@@ -82,7 +59,7 @@ remove_line init.rc "    # Tweak background writeout"
 remove_line init.rc "    write /proc/sys/vm/dirty_expire_centisecs 200"
 remove_line init.rc "    write /proc/sys/vm/dirty_background_ratio  5"
 
-$bin/sepolicy-inject -s init -t rootfs -c file -p execute_no_trans -P sepolicy;
+$bin/sepolicy-inject -s init -t rootfs -c file -p execute_no_trans -P sepolicy
 
 # end ramdisk changes
 
