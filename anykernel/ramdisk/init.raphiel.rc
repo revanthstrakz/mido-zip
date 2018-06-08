@@ -3,28 +3,22 @@
 #
 # Ramdisk file for Kat Kernel
 #
-#
+# DO NOT MODIFY THIS FILE
 
 on init
     # Nothing here, continue
 
 on late-fs
     # Filesystemworks
-    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
     write /sys/block/mmcblk0/queue/nr_requests 256
 
 on property:sys.boot_completed=1
-    # according to Qualcomm, this legacy value improves first launch latencies
-    # stock value is 512k
+    # According to Qualcomm, this legacy value improves first launch latencies
+    # Stock value is 512k
     setprop dalvik.vm.heapminfree 2m
 
     # Set permissions
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_hue
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_invert
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal*
 
     chown system system /sys/class/devfreq/1c00000.qcom,kgsl-3d0/governor
     chown system system /sys/class/devfreq/1c00000.qcom,kgsl-3d0/max_freq
@@ -39,22 +33,9 @@ on property:sys.boot_completed=1
     
     exec u:r:init:s0 -- /init.raphiel.sh
     exec u:r:su:s0 root root -- /init.raphiel.sh
-
     
 # Make sure Qualcomm init doesn't break this one
 on property:init.svc.qcom-post-boot=stopped
     # write read_ahead_kb twice coz qualcomm init is a hoe
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
     write /sys/block/mmcblk0/queue/nr_requests 256
-    
-    # interactive works for not-tweaked-or-spectrumed-yet instances
-    # FIXME : We moved this execution to spectrum, so ignore this value for now
-    
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "38000 1380000:18000 1680000:58000 1780000:138000"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load "89"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq "980000"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 980000:58 1380000:84 1680000:99"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate "20000"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time "38000"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif "0"
-    # write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack "180000"
