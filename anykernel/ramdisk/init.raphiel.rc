@@ -6,11 +6,7 @@
 # DO NOT MODIFY THIS FILE
 
 on init
-    # Stop hvdcp_opti service coz we don't even have Quick Charge re
-    stop hvdcp_opti
-
-    # Boost things coz why not
-    write /proc/sys/kernel/sched_boost 1
+		# Nothing here once again
 
 on late-fs
     # Filesystemworks
@@ -41,6 +37,5 @@ on property:sys.boot_completed=1
 
 # Make sure Qualcomm init doesn't break this one
 on property:init.svc.qcom-post-boot=stopped
-    # write read_ahead_kb twice coz qualcomm init is a hoe
     write /sys/block/mmcblk0/queue/read_ahead_kb 2048
     write /sys/block/mmcblk0/queue/nr_requests 256
