@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Copyright (C) 2018 Raphiel Rollerscaperers (raphielscape)
+# Copyright (C) 2018 Revanth Strakz (revanthstrakz)
 #
-# Ramdisk file for Kat Kernel
+# Ramdisk file for StRaKZ-KeRnEL
 #
 # DO NOT MODIFY THIS FILE
 
@@ -32,10 +32,10 @@ on property:sys.boot_completed=1
     # LMK Things we see everyday
     write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,36864,46080"
 
-    exec u:r:init:s0 -- /init.raphiel.sh
-    exec u:r:su:s0 root root -- /init.raphiel.sh
+    exec u:r:init:s0 -- /init.strakz.sh
+    exec u:r:su:s0 root root -- /init.strakz.sh
 
 # Make sure Qualcomm init doesn't break this one
 on property:init.svc.qcom-post-boot=stopped
-    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
-    write /sys/block/mmcblk0/queue/nr_requests 256
+    write /sys/devices/platform/kcal_ctrl.0/kcal 210 210 210
+    write /sys/devices/platform/kcal_ctrl.0/kcal_sat 258
