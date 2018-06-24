@@ -4,7 +4,7 @@
 ## AnyKernel setup
 # begin properties
 properties() {
-kernel.string=raphielscape @ telegram lol
+kernel.string=revanthstrakz @ telegram
 do.devicecheck=0
 do.modules=0
 do.cleanup=1
@@ -37,9 +37,9 @@ dump_boot;
 
 # begin ramdisk changes
 
-# add raphielscape initialization script
+# add Strakz initialization script
 insert_line init.rc "import /init.spectrum.rc" after "import /init.trace.rc" "import /init.spectrum.rc";
-insert_line init.rc "import /init.raphiel.rc" after "import /init.spectrum.rc" "import /init.raphiel.rc";
+insert_line init.rc "import /init.strakz.rc" after "import /init.spectrum.rc" "import /init.strakz.rc";
 cp -rpf $patch/thermal-engine.conf /vendor/etc/thermal-engine.conf
 
 #remove conflicting scheduler tuningscape
