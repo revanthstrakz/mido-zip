@@ -1,8 +1,8 @@
 #!/system/bin/sh
-# Copyright (C) 2018 Raphiel Rollerscaperers (raphielscape)
+# Copyright (C) 2018 Revanth Strakz (revanthstrakz)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-# Additional works afterboot for the sake of memes
+# Additional works afterboot for the sake of ramdisk changes to occur
 
 function write() {
     echo -n $2 > $1
