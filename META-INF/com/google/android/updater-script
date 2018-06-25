@@ -1,13 +1,13 @@
 set_progress(0.0);
 ui_print("");
-ui_print("Installing Raphielscape Kernel...");
+ui_print("Installing StRaKz KeRnEl...");
 ui_print(" ");
 ui_print("Please Wait......");
 
 set_progress(0.1);
 
 set_progress(0.1);
-ui_print("Extracting Blyat...");
+ui_print("Extracting Protection...");
 package_extract_file("anykernel/tools/busybox", "/tmp/busybox");
 set_perm(0, 0, 0777, "/tmp/busybox");
 
@@ -32,12 +32,12 @@ set_perm(0, 0, 0777, "/tmp/anykernel/tools/mkbootimg");
 set_perm(0, 0, 0777, "/tmp/anykernel/tools/unpackbootimg");
 
 set_progress(0.5);
-ui_print("Doing sum fuk, lemme smash");
+ui_print("Doing sum RamDisk Shit..!");
 package_extract_file("config/init.qcom.post_boot.sh", "/vendor/bin/init.qcom.post_boot.sh");
 set_perm(0, 0, 0777, "/vendor/bin/init.qcom.post_boot.sh");
 
 set_progress(0.6);
-ui_print("Running Setup Smash...");
+ui_print("Running the Beast Production...");
 run_program("/tmp/busybox", "fstrim", "/cache");
 run_program("/tmp/busybox", "fstrim", "/data");
 
